@@ -1,0 +1,40 @@
+version: '3.5'
+
+services:
+
+  consul-agent-1: &consul-agent
+    image: consul:latest
+    container_name: con-agent-1
+    networks:
+      - consul-net
+    command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0"
+
+  consul-agent-2:
+    <<: *consul-agent
+    container_name: con-agent-2
+
+  consul-agent-3:
+    <<: *consul-agent
+    container_name: con-agent-3
+
+  consul-server-1: &consul-server
+    <<: *consul-agent
+    container_name: con-server-1
+    command: "agent -server -retry-join consul-server-bootstrap -client 0.0.0.0"
+
+  consul-server-2:
+    <<: *consul-server
+    container_name: con-server-2
+
+  consul-server-bootstrap:
+    <<: *consul-agent
+    container_name: con-server-ui-1
+    ports:
+      - "8400:8400"
+      - "8500:8500"
+      - "8600:8600"
+      - "8600:8600/udp"
+    command: "agent -server -bootstrap-expect 3 -ui -client 0.0.0.0"
+
+networks:
+  consul-net:

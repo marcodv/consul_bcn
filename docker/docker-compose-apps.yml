@@ -1,0 +1,29 @@
+version: '3.5'
+
+services:
+
+  app-1: &app
+    image: poc-consul/app:latest
+    container_name: app-1
+    environment:
+      TZ: "Europe/Berlin"
+    restart: unless-stopped
+    ports:
+      - "8071:8070"
+    networks:
+      - consul-net
+
+  app-2:
+    <<: *app
+    container_name: app-2
+    ports:
+      - "8072:8070"
+
+  app-3:
+    <<: *app
+    container_name: app-3
+    ports:
+      - "8073:8070"
+
+networks:
+  consul-net:
