@@ -1,9 +1,0 @@
-
-# eclipse
-.classpath
-.project
-.settings/
- 
-# maven
-log/
-target/

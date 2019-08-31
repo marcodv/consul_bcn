@@ -1,80 +1,36 @@
-# PoC Consul_BCN
+
+# PoC Consul_BCN (registrator)
 
 @date 2019-09-27
 @version 1.0
 
-## Info
+## Description
 
-- https://learn.hashicorp.com/consul/getting-started/services
+This project is meant to show how to start a consul cluster and add automaticaly any docker container started in the hosts with the agent running.
 
-## 1. Generate the app docker image for the app 'shopcart'
+**Flask app**
 
-```bash
-$ cd app
-$ mvn clean package
-$ docker build -t poc-consul/app -f docker/Dockerfile .
+In the **flask** folder you can find a simple flask application: tt counts every visit to the flask (indibilually and in group).
+It has a [Nginx](https://www.nginx.com/) load-balancer in front of our 3 flask instances. Those flask images save every visit in a redis database.
+
+**Consul**
+
+In the consul folder you can find the configuration to run **3 consul agents**,** 2 servers**, a **server bootstrap** and a **registrator**.
+
+### Env vars needed
+
+To run the **Flask** app, you need to specify the **nginx** version:
+```
+export NGINX_VERSION=latest
+```
+## Starting consul
+```
+cd consul
+docker-compose --compatibility -f docker-compose-consul-cluster.yml up -d --force-recreate
 ```
 
-## 2. Generate and manage containers instances for the app 'shopcart'
-
-### 2.1. Start container instances for the app
-
-```bash
-$ cd docker
-$ docker-compose --compatibility -f docker-compose-apps.yml up -d --force-recreate
+## Starting Flask apps
 ```
-
-### 2.2. Check instances for the app
-
-```bash
-$ curl -X GET http://localhost:8071/health
-$ curl -X GET http://localhost:8072/health
-$ curl -X GET http://localhost:8073/health
+cd flask
+docker-compose up -d --force-recreate
 ```
-
-Check API with SwaggerUI: 
-
-- http://localhost:8071/swagger-ui.html
-- http://localhost:8072/swagger-ui.html
-- http://localhost:8073/swagger-ui.html
-
-### 2.3. Stop container instances for the app
-
-```bash
-$ cd docker
-$ docker-compose -f docker-compose-apps.yml down
-```
-
-## 3. Generate and manage containers instances for the Consul cluster
-
-### 3.1. Start container instances for the cluster
-
-```bash
-$ cd docker
-$ docker-compose --compatibility -f docker-compose-consul-cluster.yml up -d --force-recreate
-```
-
-### 3.2. Check Consul cluster
-
-- http://localhost:8500/
-
-### 3.3. Stop container instances for the cluster
-
-```bash
-$ cd docker
-$ docker-compose -f docker-compose-consul-cluster.yml down
-``` 
-
-
-TODO:
-
-- Register services of the apps in consul: file in each docker container
-
-    - https://learn.hashicorp.com/consul/getting-started/services
-
-- Register services of the apps in consul: docker consul registrator
-
-    - https://github.com/gliderlabs/registrator
-
-- How to call the app APIs throught Consul
-- PoC of all Consul configurations

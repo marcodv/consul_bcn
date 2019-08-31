@@ -1,0 +1,39 @@
+version: '3.5'
+
+services:
+  redis:
+    image: redis
+    networks:
+      - backend
+  app: &flask
+    build:
+      context: ./app
+    container_name: app1
+    networks:
+      - frontend
+      - backend
+    links:
+      - redis
+  app2:
+    <<: *flask
+    container_name: app2
+  app3:
+    <<: *flask
+    ports:
+      - "8001:80"
+    container_name: app3
+  lb:
+    image: nginx:${NGINX_VERSION}
+    ports:
+      - "8000:80"
+    volumes:
+      - ./load-balancer/nginx.conf:/etc/nginx/nginx.conf
+    hostname: proxy
+    networks:
+      - frontend
+    links:
+      - app
+    restart: always
+networks:
+  frontend:
+  backend:
