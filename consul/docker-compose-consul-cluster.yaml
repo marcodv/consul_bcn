@@ -38,9 +38,9 @@ services:
   
   consul-registrator:
     image: gliderlabs/registrator:latest
-    command: "-ip ${MYHOST} consul://${MYHOST}:8500"
+    command: "-ip ${HOSTNAME} consul://${HOSTNAME}:8500"
     container_name: registrator
-    hostname: ${MYHOST}
+    hostname: ${HOSTNAME}
     depends_on:
     - consul
     volumes:
