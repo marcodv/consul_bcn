@@ -1,5 +1,6 @@
 from flask import Flask
 from redis import Redis, RedisError
+import consul
 import os
 import socket
 
@@ -7,7 +8,33 @@ import socket
 global_counter = Redis(host="redis", db=0, socket_connect_timeout=2, socket_timeout=2)
 my_counter = Redis(host="redis", db=1, socket_connect_timeout=2, socket_timeout=2)
 
+# Prepare for consul
+c = consul.Consul(host='con-agent-2', port='8500')
+
 app = Flask(__name__)
+
+@app.route("/offline/")
+def offline():
+    hostname=socket.gethostname()
+    html = c.kv.put('maintenance', hostname)
+    return html.format()
+
+@app.route("/online/")
+def online():
+    hostname=socket.gethostname()
+    html = c.kv.delete('maintenance', hostname)
+    return html.format()
+
+@app.route("/health/")
+def health():
+    index, data = c.kv.get('maintenance', index=index)
+    if hostname == str((data['Value'])[2:-1]
+        html= "maintenance"
+        code = 503
+    else
+        html= "ok"
+        code = 200
+    return html.format(), code
 
 @app.route("/")
 def hello():
@@ -29,4 +56,4 @@ def hello():
     return html.format(name=os.getenv("NAME", "world"), hostname=hostname, visits=visits, my_visits=my_visits)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=80, debug=True)
