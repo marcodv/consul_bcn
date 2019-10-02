@@ -9,6 +9,11 @@ my_counter = Redis(host="redis", db=1, socket_connect_timeout=2, socket_timeout=
 
 app = Flask(__name__)
 
+@app.route("/health/")
+def health():
+    html= "ok"
+    return html.format()
+
 @app.route("/")
 def hello():
     hostname=socket.gethostname()
@@ -29,4 +34,4 @@ def hello():
     return html.format(name=os.getenv("NAME", "world"), hostname=hostname, visits=visits, my_visits=my_visits)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=80, debug=True)

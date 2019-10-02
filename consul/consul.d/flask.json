@@ -1,0 +1,80 @@
+{
+    "services": [
+      {
+        "id": "flask1",
+        "name": "flask",
+	"checks":[{
+	  "id": "health endpoint2",
+	  "http": "http://172.24.0.1:8001/health/",
+	  "interval": "10s"
+	}],
+        "tags": [
+          "primary",
+          "prod"
+        ],
+        "address": "172.21.0.3",
+        "tagged_addresses": {
+          "lan": {
+            "address": "172.21.0.3",
+            "port": 80
+          },
+          "wan": {
+            "address": "41.38.6.54",
+            "port": 8001
+          }
+        },
+        "port": 8001
+      },
+      {
+        "id": "flask3",
+        "name": "flask",
+	"checks":[{
+	  "id": "health endpoint3",
+	  "http": "http://172.24.0.1:8003/health/",
+	  "interval": "10s"
+	}],
+        "tags": [
+          "primary",
+          "dev"
+        ],
+        "address": "172.21.0.5",
+        "tagged_addresses": {
+          "lan": {
+            "address": "172.21.0.5",
+            "port": 80
+          },
+          "wan": {
+            "address": "41.38.6.54",
+            "port": 8003
+          }
+        },
+        "port": 8003
+      },
+      {
+        "id": "flask2",
+        "name": "flask",
+	"checks":[{
+	  "id": "helath endoint2",
+	  "http": "http://172.24.0.1:8002/health/",
+	  "interval": "10s"
+	}],
+        "tags": [
+          "delayed",
+          "secondary",
+          "qa"
+        ],
+        "address": "172.21.0.4",
+        "tagged_addresses": {
+          "lan": {
+            "address": "172.21.0.4",
+            "port": 80
+          },
+          "wan": {
+            "address": "41.38.6.54",
+            "port": 8002
+          }
+        },
+        "port": 8002
+      }
+    ]
+  }
