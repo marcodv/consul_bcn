@@ -5,24 +5,16 @@ services:
   consul-agent-1: &consul-agent
     image: consul:latest
     container_name: con-agent-1
-<<<<<<< HEAD:consul/docker-compose-consul-cluster.yaml
     networks:
       - consul-net
     command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0 -node agent-1"
-=======
-    command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0"
->>>>>>> 24e2cca4f374b633ec1b1bdc2f9bb5223cf38edd:consul/docker-compose-consul-cluster.yml
 
   consul-agent-2:
     <<: *consul-agent
     container_name: con-agent-2
     volumes:
-<<<<<<< HEAD:consul/docker-compose-consul-cluster.yaml
       - ./consul.d:/consul/config/
     command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0 -node agent-2"
-=======
-      - ./consul.d:/consul/config
->>>>>>> 24e2cca4f374b633ec1b1bdc2f9bb5223cf38edd:consul/docker-compose-consul-cluster.yml
 
   consul-agent-3:
     <<: *consul-agent
