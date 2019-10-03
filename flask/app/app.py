@@ -16,13 +16,13 @@ app = Flask(__name__)
 @app.route("/offline/")
 def offline():
     hostname=socket.gethostname()
-    html = c.kv.put(hostname, 'maintenance')
+    html = str(c.kv.put(hostname, 'maintenance'))
     return html.format()
 
 @app.route("/online/")
 def online():
     hostname=socket.gethostname()
-    html = c.kv.put( hostname, 'ok')
+    html = str(c.kv.put( hostname, 'ok'))
     return html.format()
 
 @app.route("/health/")
@@ -58,4 +58,6 @@ def hello():
     return html.format(name=os.getenv("NAME", "world"), hostname=hostname, visits=visits, my_visits=my_visits)
 
 if __name__ == "__main__":
+    hostname=socket.gethostname()
+    c.kv.put( hostname, 'ok')
     app.run(host='0.0.0.0', port=80, debug=True)
