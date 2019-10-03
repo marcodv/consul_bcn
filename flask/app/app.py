@@ -9,7 +9,8 @@ global_counter = Redis(host="redis", db=0, socket_connect_timeout=2, socket_time
 my_counter = Redis(host="redis", db=1, socket_connect_timeout=2, socket_timeout=2)
 
 # Prepare for consul
-c = consul.Consul(host='172.27.0.1', port='8500')
+gateway = os.system("ip route show | head -n 1 | awk '{print $3}'")
+c = consul.Consul(host='gateway', port='8500')
 
 app = Flask(__name__)
 
