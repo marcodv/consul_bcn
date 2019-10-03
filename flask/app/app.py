@@ -9,30 +9,32 @@ global_counter = Redis(host="redis", db=0, socket_connect_timeout=2, socket_time
 my_counter = Redis(host="redis", db=1, socket_connect_timeout=2, socket_timeout=2)
 
 # Prepare for consul
-c = consul.Consul(host='con-agent-2', port='8500')
+c = consul.Consul(host='172.27.0.1', port='8500')
 
 app = Flask(__name__)
 
 @app.route("/offline/")
 def offline():
     hostname=socket.gethostname()
-    html = c.kv.put('maintenance', hostname)
+    html = c.kv.put(hostname, 'maintenance')
     return html.format()
 
 @app.route("/online/")
 def online():
     hostname=socket.gethostname()
-    html = c.kv.delete('maintenance', hostname)
+    html = c.kv.put( hostname, 'ok')
     return html.format()
 
 @app.route("/health/")
 def health():
-    index, data = c.kv.get('maintenance', index=index)
-    if hostname == str((data['Value'])[2:-1]
-        html= "maintenance"
+    index = None
+    hostname=socket.gethostname()
+    index, data = c.kv.get(hostname, index=index)
+    if hostname == str(data['Value'])[2:-1]:
+        html = "maintenance"
         code = 503
-    else
-        html= "ok"
+    else:
+        html = "ok"
         code = 200
     return html.format(), code
 

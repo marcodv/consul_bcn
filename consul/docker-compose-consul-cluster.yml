@@ -5,8 +5,6 @@ services:
   consul-agent-1: &consul-agent
     image: consul:latest
     container_name: con-agent-1
-    networks:
-      - consul-net
     command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0 -node agent-1"
 
   consul-agent-2:
@@ -39,25 +37,4 @@ services:
       - "8600:8600"
       - "8600:8600/udp"
     command: "agent -server -bootstrap-expect 3 -ui -client 0.0.0.0"
-<<<<<<< HEAD:consul/docker-compose-consul-cluster.yaml
   
-networks:
-  consul-net:
-=======
-    depends_on:
-      - consul-server-1
-      - consul-server-2
-      - consul-agent-1
-      - consul-agent-2
-      - consul-agent-3
-
-        #  consul-registrator:
-        #    image: gliderlabs/registrator:latest
-        #    command: "-ip ES-EMBP1015 consul://ES-EMBP1015:8500"
-        #    container_name: registrator
-        #    hostname: ES-EMBP1015
-        #    depends_on:
-        #    - consul-server-bootstrap
-        #    volumes:
-        #    - /var/run/docker.sock:/tmp/docker.sock
->>>>>>> 24e2cca4f374b633ec1b1bdc2f9bb5223cf38edd:consul/docker-compose-consul-cluster.yml

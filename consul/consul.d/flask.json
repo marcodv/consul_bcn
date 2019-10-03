@@ -5,7 +5,7 @@
         "name": "flask",
 	"checks":[{
 	  "id": "health endpoint2",
-	  "http": "http://172.24.0.1:8001/health/",
+	  "http": "http://172.27.0.1:8001/health/",
 	  "interval": "10s"
 	}],
         "tags": [
@@ -30,7 +30,7 @@
         "name": "flask",
 	"checks":[{
 	  "id": "health endpoint3",
-	  "http": "http://172.24.0.1:8003/health/",
+	  "http": "http://172.27.0.1:8003/health/",
 	  "interval": "10s"
 	}],
         "tags": [
@@ -55,7 +55,7 @@
         "name": "flask",
 	"checks":[{
 	  "id": "helath endoint2",
-	  "http": "http://172.24.0.1:8002/health/",
+	  "http": "http://172.27.0.1:8002/health/",
 	  "interval": "10s"
 	}],
         "tags": [
