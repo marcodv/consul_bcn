@@ -1,0 +1,29 @@
+{
+    "services": [
+      {
+        "id": "flask3",
+        "name": "flask",
+	"checks":[{
+	  "id": "health endpoint3",
+	  "http": "http://app3/health/",
+	  "interval": "10s"
+	}],
+        "tags": [
+          "blue",
+          "dev"
+        ],
+        "address": "app3",
+        "tagged_addresses": {
+          "lan": {
+            "address": "app3",
+            "port": 80
+          },
+          "wan": {
+            "address": "41.38.6.54",
+            "port": 8003
+          }
+        },
+        "port": 80
+      }
+    ]
+  }

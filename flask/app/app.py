@@ -10,29 +10,28 @@ my_counter = Redis(host="redis", db=1, socket_connect_timeout=2, socket_timeout=
 
 # Prepare for consul
 gateway = os.system("ip route show | head -n 1 | awk '{print $3}'")
-c = consul.Consul(host='gateway', port='8500')
+c = consul.Consul(host='con-server-ui-1', port='8500')
+hostname=socket.gethostname()
 
 app = Flask(__name__)
 
 @app.route("/offline/")
 def offline():
-    hostname=socket.gethostname()
     html = str(c.kv.put(hostname, 'maintenance'))
     return html.format()
 
 @app.route("/online/")
 def online():
-    hostname=socket.gethostname()
     html = str(c.kv.put( hostname, 'ok'))
     return html.format()
 
 @app.route("/health/")
 def health():
     index = None
-    hostname=socket.gethostname()
     index, data = c.kv.get(hostname, index=index)
-    if hostname == str(data['Value'])[2:-1]:
-        html = "maintenance"
+    if 'maintenance'  == str(data['Value'])[2:-1]:
+#        html = "maintenance"
+        html = str(data['Value'])[2:-1]
         code = 503
     else:
         html = "ok"
@@ -41,7 +40,6 @@ def health():
 
 @app.route("/")
 def hello():
-    hostname=socket.gethostname()
     try:
         visits = global_counter.incr("counter")
     except RedisError:
@@ -59,6 +57,5 @@ def hello():
     return html.format(name=os.getenv("NAME", "world"), hostname=hostname, visits=visits, my_visits=my_visits)
 
 if __name__ == "__main__":
-    hostname=socket.gethostname()
     c.kv.put( hostname, 'ok')
     app.run(host='0.0.0.0', port=80, debug=True)

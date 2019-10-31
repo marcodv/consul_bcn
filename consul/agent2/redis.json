@@ -1,0 +1,30 @@
+{
+  "service": {
+    "id": "redis",
+    "name": "redis",
+    "tags": ["primary"],
+    "address": "127.0.0.1",
+    "meta": {
+      "meta": "for my service"
+    },
+    "tagged_addresses": {
+      "lan": {
+        "address": "172.22.0.2",
+        "port": 27017
+      },
+      "wan": {
+        "address": "192.168.1.150",
+        "port": 27017
+      }
+    },
+    "port": 27017,
+    "enable_tag_override": false,
+    "checks": [
+    ],
+    "weights": {
+      "passing": 5,
+      "warning": 1
+    },
+    "token": ""
+  }
+}

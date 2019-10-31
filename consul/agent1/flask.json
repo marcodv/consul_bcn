@@ -1,0 +1,54 @@
+{
+    "services": [
+      {
+        "id": "flask1",
+        "name": "flask",
+	"checks":[{
+	  "id": "health endpoint2",
+	  "http": "http://app1/health/",
+	  "interval": "10s"
+	}],
+        "tags": [
+          "blue",
+          "prod"
+        ],
+        "address": "app1",
+        "tagged_addresses": {
+          "lan": {
+            "address": "app1",
+            "port": 80
+          },
+          "wan": {
+            "address": "41.38.6.54",
+            "port": 8001
+          }
+        },
+        "port": 80
+      },
+      {
+        "id": "flask2",
+        "name": "flask",
+	"checks":[{
+	  "id": "helath endoint2",
+	  "http": "http://app2/health/",
+	  "interval": "10s"
+	}],
+        "tags": [
+          "green",
+          "qa"
+        ],
+        "address": "app2",
+        "tagged_addresses": {
+          "lan": {
+            "address": "app2",
+            "port": 80
+          },
+          "wan": {
+            "address": "41.38.6.54",
+            "port": 8002
+          }
+        },
+        "port": 80
+      }
+    ]
+  }

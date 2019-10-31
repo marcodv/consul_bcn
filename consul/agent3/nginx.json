@@ -1,0 +1,10 @@
+{
+"service": {
+	"Name": "nginx",
+	"Port": 80,
+	"check": {
+		"args": ["curl", "flask_lb_1"],
+		"interval": "3s"
+		}
+        }
+}

@@ -1,0 +1,29 @@
+{
+    "services": [
+      {
+        "id": "flask1",
+        "name": "flask",
+	"checks":[{
+	  "id": "health endpoint2",
+	  "http": "http://$GATEWAY:$PORT/health/",
+	  "interval": "10s"
+	}],
+        "tags": [
+          "blue",
+          "prod"
+        ],
+        "address": "$IP_app1",
+        "tagged_addresses": {
+          "lan": {
+            "address": "172.21.0.3",
+            "port": 80
+          },
+          "wan": {
+            "address": "41.38.6.54",
+            "port": $PORT
+          }
+        },
+        "port": $PORT
+      }
+    ]
+  }

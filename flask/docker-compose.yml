@@ -5,14 +5,20 @@ services:
     image: redis
     dns:
       - con-server-ui-1:8500
+    networks:
+      - consul_consul
   app: &flask
     build:
       context: ./app
     container_name: app1
+    environment:
+      - CONSUL_SERVER=con-server-ui-1
     ports:
       - "8001:80"
     dns:
-      - con-server-ui-1:8500
+      - consul-server-bootstrap:8500
+    networks:
+      - consul_consul
     links:
       - redis
   app2:
@@ -32,8 +38,13 @@ services:
     volumes:
       - ./load-balancer/nginx.conf:/etc/nginx/nginx.conf
     hostname: proxy
+    networks:
+      - consul_consul
     dns:
       - con-server-ui-1:8500
     links:
       - app
     restart: always
+networks:
+  consul_consul:
+    external: true
